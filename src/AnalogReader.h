@@ -1,11 +1,13 @@
 #include <Arduino.h>
 #include <algorithm>
 #include <vector>
+#include <functional>  // Needed for std::function
 
 namespace Olon {
 
 class AnalogReader {
  private:
+  using OnCompleteCallback = std::function<void()>;
   uint16_t _sampleCount = 2;
   uint32_t _sampleDelay = 5; // 5 msec
   uint32_t _lastSampleTime = 0;
@@ -19,7 +21,7 @@ class AnalogReader {
   float    _maxVoltage = 3.3f;  // the voltage @ maxAnalogReading
   bool     _busy = false;
   mutable std::vector<uint16_t> _samples;
-  void (*_callback)() = nullptr;
+  OnCompleteCallback _completeCallback = nullptr;
 
   float calculateMedian() const {
     size_t size = _samples.size();
@@ -71,8 +73,8 @@ class AnalogReader {
     _maxVoltage = maxVoltage;
   }
 
-  void onComplete(void (*callback)()) {
-    _callback = callback;
+  void onComplete(OnCompleteCallback callback) {
+    _completeCallback = callback;
   }
 
   void run() {
@@ -96,8 +98,8 @@ class AnalogReader {
       _samples.push_back(reading);
       _lastSampleTime = currentTime;
 
-      if (_samples.size() >= _sampleCount && _callback) {
-        _callback();
+      if (_samples.size() >= _sampleCount && _completeCallback) {
+        _completeCallback();
         _busy = false;
       }
     }

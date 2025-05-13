@@ -1,0 +1,20 @@
+{
+  "name": "OlonAnalogRead",
+  "version": "1.0.2",
+  "description": "Analog read library for ESP32 and ESP8266",
+  "keywords": [
+    "ADC",
+    "analog",
+    "read"
+  ],
+  "authors": {
+    "name": "Dimitris Paterakis",
+    "url": "https://github.com/olonsoft"
+  },
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms": [
+    "espressif8266",
+    "espressif32"
+  ]
+}
