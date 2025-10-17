@@ -12,7 +12,7 @@ void setup() {
   aReader.setSampleCount(10);
   aReader.setSampleDelay(10); // msecs
   //aReader.setMaxAnalogReading(1023); // 1023 for ESP8622
-  aReader.setMaxVoltage(4.2); // the voltage @ maxAnalogReading
+  aReader.setMaxVoltage(5.2); // the voltage @ maxAnalogReading
   aReader.onComplete([](){
     Serial.println(aReader.voltage(), 3);  // Print with 3 decimal places
   });
@@ -21,7 +21,7 @@ void setup() {
 }
 
 void loop() {
-  if (millis() - lastTime > 5000 && !aReader.busy()) {
+  if (millis() - lastTime > 2000 && !aReader.busy()) {
     lastTime = millis();
     aReader.run();
   }
